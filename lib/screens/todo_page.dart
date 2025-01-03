@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../models/TodoItem.dart';
+import '../models/TodoItemAdd.dart';
 import '../services/authentication_service.dart';
 import '../services/todo_service.dart';
+import '../widgets/TodoItem.dart';
 import 'login_page.dart';
 import 'todoupdate_page.dart';
 
@@ -14,7 +16,7 @@ class TodoPage extends StatefulWidget {
 
 class TodoPageState extends State<TodoPage> {
   late String accessToken;
-  late List<TodoItem> todoItems = [];
+  List<TodoItem> todoItems = [];
 
   @override
   void initState() {
@@ -37,78 +39,76 @@ class TodoPageState extends State<TodoPage> {
     }
   }
 
-
-
   Future<void> _fetchData() async {
     try {
-      final List<TodoItem> fetchedItems =
-          await TodoService.fetchTodoItems(accessToken);
+      if (accessToken.isEmpty) {
+        throw Exception('Access token is empty or null');
+      }
+
+      final fetchedItems = await TodoService.fetchTodoItems(accessToken);
       setState(() {
         todoItems = fetchedItems;
       });
     } catch (e) {
       print('Failed to fetch todo items: $e');
-      // Gérer les erreurs de récupération des données
     }
   }
 
-  Future<void> _addItem(String title) async {
+  Future<void> _addItem(String title, String? description) async {
     try {
-      final TodoItem newItem = await TodoService.createTodoItem(
-          accessToken, TodoItemAdd(title: title));
+      final newItem = await TodoService.createTodoItem(
+        accessToken,
+        TodoItemAdd(title: title, description: description),
+      );
       setState(() {
         todoItems.add(newItem);
       });
     } catch (e) {
       print('Failed to add todo item: $e');
-      // Gérer les erreurs d'ajout
     }
   }
 
   Future<void> _updateItem(TodoItem updatedItem) async {
     try {
-      await TodoService.updateTodoItem(accessToken, updatedItem);
-      final TodoItem newItem =
-          await TodoService.fetchTodoItem(accessToken, updatedItem.id);
+      await TodoService.updateTodoItem(
+        accessToken,
+        TodoItemAdd(
+          title: updatedItem.title,
+          description: updatedItem.description,
+        ),
+        updatedItem.id,
+      );
       setState(() {
-        final index =
-            todoItems.indexWhere((element) => element.id == updatedItem.id);
+        final index = todoItems.indexWhere((item) => item.id == updatedItem.id);
         if (index != -1) {
-          todoItems[index] = newItem;
+          todoItems[index] = updatedItem;
         }
       });
     } catch (e) {
       print('Failed to update todo item: $e');
-      // Gérer les erreurs de mise à jour
     }
   }
 
   Future<void> _deleteItem(int id) async {
     try {
-      await TodoService.deleteTodoItem(accessToken, id);
+      await TodoService.deleteTodoItem(accessToken!, id);
       setState(() {
         todoItems.removeWhere((item) => item.id == id);
       });
     } catch (e) {
       print('Failed to delete todo item: $e');
-      // Gérer les erreurs de suppression
     }
   }
 
   Future<void> _showDeleteConfirmationDialog(int id) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: true, // user must tap button!
-      builder: (BuildContext context) {
+      barrierDismissible: true,
+      builder: (context) {
         return AlertDialog(
           title: const Text('Confirmer la suppression'),
-          content: const SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Êtes-vous sûr de vouloir supprimer cet élément ?'),
-              ],
-            ),
-          ),
+          content:
+              const Text('Êtes-vous sûr de vouloir supprimer cet élément ?'),
           actions: <Widget>[
             TextButton(
               child: const Text('Annuler'),
@@ -133,29 +133,20 @@ class TodoPageState extends State<TodoPage> {
     final updatedItem = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            EditTodoPage(todoItem: item, accessToken: accessToken),
+        builder: (context) => EditTodoPage(
+          todoItem: item,
+          accessToken: accessToken,
+        ),
       ),
     );
     if (updatedItem != null) {
-      // Mettre à jour l'élément dans la liste après la modification
       setState(() {
-        final index =
-            todoItems.indexWhere((element) => element.id == updatedItem.id);
+        final index = todoItems.indexWhere((el) => el.id == updatedItem.id);
         if (index != -1) {
           todoItems[index] = updatedItem;
         }
       });
     }
-  }
-
-  Future<void> _logout() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
-    );
   }
 
   @override
@@ -167,44 +158,31 @@ class TodoPageState extends State<TodoPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: _logout,
+            onPressed: () async {
+              logout(context);
+            },
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: todoItems.length,
-        itemBuilder: (context, index) {
-          final item = todoItems[index];
-          return CheckboxListTile(
-            title: Text(item.title),
-            onChanged: (newValue) async {
-              setState(() {
-                item.isCompleted = newValue ?? false;
-              });
-              // Mettre à jour l'élément sur le serveur
-              await _updateItem(item);
-            },
-            secondary: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () => _navigateToEditPage(item),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => _showDeleteConfirmationDialog(item.id),
-                ),
-              ],
+      body: todoItems.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: todoItems.length,
+              itemBuilder: (context, index) {
+                final item = todoItems[index];
+
+                return TodoItemWidget(
+                  todoItem: item,
+                  onEdit: () => _navigateToEditPage(item),
+                  onDelete: () => _showDeleteConfirmationDialog(item.id),
+                );
+              },
             ),
-          );
-        },
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final String? newItemTitle = await _showAddItemDialog(context);
-          if (newItemTitle != null && newItemTitle.isNotEmpty) {
-            await _addItem(newItemTitle);
+          final result = await _showAddItemDialog(context);
+          if (result != null) {
+            await _addItem(result['title']!, result['description']);
           }
         },
         child: const Icon(Icons.add),
@@ -212,16 +190,28 @@ class TodoPageState extends State<TodoPage> {
     );
   }
 
-  Future<String?> _showAddItemDialog(BuildContext context) async {
-    TextEditingController textFieldController = TextEditingController();
-    return showDialog<String>(
+
+  Future<Map<String, String>?> _showAddItemDialog(BuildContext context) async {
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
+
+    return showDialog<Map<String, String>>(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text('Ajouter un élément'),
-          content: TextField(
-            controller: textFieldController,
-            decoration: const InputDecoration(hintText: 'Entrez le titre'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(hintText: 'Titre'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: const InputDecoration(hintText: 'Description'),
+              ),
+            ],
           ),
           actions: <Widget>[
             TextButton(
@@ -233,8 +223,10 @@ class TodoPageState extends State<TodoPage> {
             TextButton(
               child: const Text('Ajouter'),
               onPressed: () {
-                String newItemTitle = textFieldController.text.trim();
-                Navigator.of(context).pop(newItemTitle);
+                Navigator.of(context).pop({
+                  'title': titleController.text.trim(),
+                  'description': descriptionController.text.trim(),
+                });
               },
             ),
           ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../models/TodoItem.dart';
+import '../models/TodoItemAdd.dart';
 import '../services/todo_service.dart';
-
 
 class EditTodoPage extends StatefulWidget {
   final TodoItem todoItem;
@@ -21,11 +22,11 @@ class _EditTodoPageState extends State<EditTodoPage> {
   @override
   void initState() {
     super.initState();
-    accessToken = widget.accessToken; // Initialisation de accessToken
+    accessToken = widget.accessToken;
+    // Initialisation de accessToken
     _titleController = TextEditingController(text: widget.todoItem.title);
-    _descriptioncontroller = TextEditingController(text: widget.todoItem.description);
-
-
+    _descriptioncontroller =
+        TextEditingController(text: widget.todoItem.description);
   }
 
   @override
@@ -38,13 +39,12 @@ class _EditTodoPageState extends State<EditTodoPage> {
   Future<void> _updateItem() async {
     try {
       await TodoService.updateTodoItem(
-        accessToken, // Assurez-vous d'avoir l'accessToken disponible ici
-        TodoItem(
-          id: widget.todoItem.id,
+        accessToken,
+        TodoItemAdd(
           title: _titleController.text.trim(),
           description: _descriptioncontroller.text.trim(),
-          dateCreation: null,
         ),
+        widget.todoItem.id,
       );
 
       // Après la mise à jour réussie, retourner à l'écran précédent
@@ -53,12 +53,16 @@ class _EditTodoPageState extends State<EditTodoPage> {
       Navigator.of(context).pop(updatedItem);
     } catch (e) {
       print('Failed to update todo item: $e');
-      // Gérer les erreurs de mise à jour
     }
   }
 
   @override
   Widget build(BuildContext context) {
+final textStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: Colors.black45, // Changer ici pour une couleur plus visible
+        );
+    ;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Modifier Todo'),
@@ -71,8 +75,13 @@ class _EditTodoPageState extends State<EditTodoPage> {
             TextField(
               controller: _titleController,
               decoration: const InputDecoration(labelText: 'Titre'),
+              style: textStyle, // Application du style personnalisé ici
             ),
-
+            TextField(
+              controller: _descriptioncontroller,
+              decoration: const InputDecoration(labelText: 'Description'),
+              style: textStyle, // Application du style personnalisé ici
+            ),
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: _updateItem,

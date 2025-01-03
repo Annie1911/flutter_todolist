@@ -7,7 +7,7 @@ import '../screens/login_page.dart';
 import '../screens/todo_page.dart';
 
 const String prodBaseUrl = 'fastapitodolist-production.up.railway.app/users';
-const String devBaseUrl = 'http://127.0.0.1:8000/users';
+const String devBaseUrl = 'http://192.168.0.109:8000/users';
 Future<void> login(
     String username, String password, BuildContext context) async {
   if (username.isEmpty || password.isEmpty) {
@@ -70,7 +70,7 @@ Future<void> login(
   }
 }
 
-Future<void> refreshToken(String? token) async {
+Future<void> refreshToken(String token) async {
   final url = Uri.parse('$devBaseUrl/refresh-token');
 
   try {
@@ -80,7 +80,7 @@ Future<void> refreshToken(String? token) async {
         'Content-Type': 'application/json; charset=UTF-8',
       },
           body: jsonEncode(<String, String>{
-        'refresh_token': token??'',
+        'refresh_token': token,
         'token_type': 'bearer',
       }),
     );

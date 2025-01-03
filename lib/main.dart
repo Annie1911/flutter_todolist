@@ -23,12 +23,11 @@ class MyApp extends StatelessWidget {
           primary: Colors.deepPurple, // Couleur principale
           secondary: Colors.lightBlue, // Couleur secondaire
           surface: Colors.grey[850]!, // Fond des surfaces (cartes, dialogues)
-          background: Colors.black54, // Fond principal
           error: Colors.red, // Couleur pour les erreurs
           onPrimary: Colors.white, // Texte sur le fond primaire
           onSecondary: Colors.white, // Texte sur le fond secondaire
-          onSurface: Colors.white, // Texte sur les surfaces
-          onBackground: Colors.white, // Texte sur le fond principal
+          onSurface: Colors
+              .grey[300]!, // Texte sur les surfaces Texte sur le fond principal
           onError: Colors.white, // Texte sur fond d'erreur
         ),
         useMaterial3: true, // Active le style Material 3
