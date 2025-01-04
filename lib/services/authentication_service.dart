@@ -25,7 +25,7 @@ Future<void> login(
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'credential': username.trim(),
+        'username': username.trim(),
         'password': password.trim(),
       }),
     );
