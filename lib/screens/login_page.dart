@@ -17,7 +17,7 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: colorScheme.primary,
         title: const Text(
-          'Connexion',
+          'Connexion ToDoList',
           style: TextStyle(color: Colors.white), // Texte blanc
         ),
         centerTitle: true,

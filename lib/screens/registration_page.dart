@@ -56,7 +56,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       appBar: AppBar(
         backgroundColor: colorScheme.primary,
         title: const Text(
-          'Inscription',
+          'Inscription ToDoList',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,

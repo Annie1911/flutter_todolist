@@ -16,23 +16,22 @@ class EditTodoPage extends StatefulWidget {
 
 class _EditTodoPageState extends State<EditTodoPage> {
   late TextEditingController _titleController;
-  late TextEditingController _descriptioncontroller;
+  late TextEditingController _descriptionController;
   late String accessToken;
 
   @override
   void initState() {
     super.initState();
     accessToken = widget.accessToken;
-    // Initialisation de accessToken
     _titleController = TextEditingController(text: widget.todoItem.title);
-    _descriptioncontroller =
+    _descriptionController =
         TextEditingController(text: widget.todoItem.description);
   }
 
   @override
   void dispose() {
     _titleController.dispose();
-    _descriptioncontroller.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -42,14 +41,13 @@ class _EditTodoPageState extends State<EditTodoPage> {
         accessToken,
         TodoItemAdd(
           title: _titleController.text.trim(),
-          description: _descriptioncontroller.text.trim(),
+          description: _descriptionController.text.trim(),
         ),
         widget.todoItem.id,
       );
 
-      // Après la mise à jour réussie, retourner à l'écran précédent
       final updatedItem =
-          await TodoService.fetchTodoItem(accessToken, widget.todoItem.id);
+      await TodoService.fetchTodoItem(accessToken, widget.todoItem.id);
       Navigator.of(context).pop(updatedItem);
     } catch (e) {
       print('Failed to update todo item: $e');
@@ -58,38 +56,106 @@ class _EditTodoPageState extends State<EditTodoPage> {
 
   @override
   Widget build(BuildContext context) {
-final textStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: Colors.black45, // Changer ici pour une couleur plus visible
-        );
-    ;
+    final textStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+      color: Theme.of(context).colorScheme.onSurface,
+    );
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Modifier Todo'),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Titre'),
-              style: textStyle, // Application du style personnalisé ici
-            ),
-            TextField(
-              controller: _descriptioncontroller,
-              decoration: const InputDecoration(labelText: 'Description'),
-              style: textStyle, // Application du style personnalisé ici
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _updateItem,
-              child: const Text('Enregistrer'),
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Modifier la tâche',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              TextField(
+                controller: _titleController,
+                decoration: InputDecoration(
+                  labelText: 'Titre',
+                  labelStyle: textStyle,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 2.0,
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(context).colorScheme.surface,
+                ),
+                style: textStyle,
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _descriptionController,
+                maxLines: 4,
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  labelStyle: textStyle,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 2.0,
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(context).colorScheme.surface,
+                ),
+                style: textStyle,
+              ),
+              const SizedBox(height: 20.0),
+              Center(
+                child: ElevatedButton(
+                  onPressed: _updateItem,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32.0, vertical: 16.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  child: Text(
+                    'Enregistrer',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }
 }
