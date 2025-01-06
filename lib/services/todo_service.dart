@@ -4,7 +4,7 @@ import 'dart:convert';
 import '../models/TodoItem.dart';
 import '../models/TodoItemAdd.dart';
 
-const String baseUrl = 'http://192.168.43.49:8000/todoitem'; // Remplacez par votre URL de l'API
+const String baseUrl = 'http://127.0.0.1:8000/todoitem'; // Remplacez par votre URL de l'API
 
 class TodoService {
   static Future<List<TodoItem>> fetchTodoItems(String accessToken) async {

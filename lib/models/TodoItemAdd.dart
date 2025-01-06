@@ -9,7 +9,7 @@ class TodoItemAdd {
 
   Map<String, dynamic> toJson() {
     return {
-      'titre': title,
+      'titre':  title.isEmpty ? null : title,
       'description': description,
     };
   }

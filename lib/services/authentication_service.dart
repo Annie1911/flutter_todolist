@@ -8,7 +8,7 @@ import '../screens/todo_page.dart';
 
 const String prodBaseUrl = 'fastapitodolist-production.up.railway.app/users';
 
-const String devBaseUrl = 'http://192.168.43.49:8000/users';
+const String devBaseUrl = 'http://127.0.0.1:8000/users';
 
 Future<void> login(
     String username, String password, BuildContext context) async {
