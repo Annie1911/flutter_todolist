@@ -5,7 +5,7 @@ import '../models/TodoItem.dart';
 import '../models/TodoItemAdd.dart';
 
 const String baseUrl =
-    'http://192.168.0.109:8000/todoitem'; // Remplacez par votre URL de l'API
+    'http://192.168.43.49:8000/todoitem'; // Remplacez par votre URL de l'API
 
 class TodoService {
   static Future<List<TodoItem>> fetchTodoItems(String accessToken) async {
@@ -36,7 +36,7 @@ class TodoService {
     );
 
     if (response.statusCode == 200) {
-      return TodoItem.fromJson(jsonDecode(response.body));
+      return TodoItem.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
       throw Exception('Failed to create todo item ${response.reasonPhrase}');
     }
@@ -75,7 +75,7 @@ class TodoService {
     final response = await http.get(
       Uri.parse('$baseUrl/read-one/$id'),
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json ; charset=UTF-8',
         'Authorization': 'Bearer $accessToken',
       },
     );
@@ -87,5 +87,3 @@ class TodoService {
     }
   }
 }
-
-
