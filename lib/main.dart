@@ -19,27 +19,42 @@ class MyApp extends StatelessWidget {
       title: 'Mon Application',
       theme: ThemeData(
         colorScheme: ColorScheme(
-          brightness: Brightness.dark, // Utilisation du thème sombre
-          primary: Colors.deepPurple, // Couleur principale
-          secondary: Colors.lightBlue, // Couleur secondaire
-          surface: Colors.grey[850]!, // Fond des surfaces (cartes, dialogues)
-          error: Colors.red, // Couleur pour les erreurs
-          onPrimary: Colors.white, // Texte sur le fond primaire
-          onSecondary: Colors.white, // Texte sur le fond secondaire
-          onSurface: Colors
-              .grey[300]!, // Texte sur les surfaces Texte sur le fond principal
-          onError: Colors.white, // Texte sur fond d'erreur
+          brightness: Brightness.dark, // Thème sombre
+          primary: Colors.amber, // Couleur principale (vibrante et moderne)
+          secondary: Colors.cyanAccent, // Couleur secondaire
+          surface: Colors.grey[800]!, // Fond des surfaces (cartes, dialogues)
+          background: Colors.black, // Fond global des écrans
+          error: Colors.pinkAccent, // Couleur pour les erreurs
+          onPrimary: Colors.black, // Texte sur le fond principal (contraste élevé)
+          onSecondary: Colors.black, // Texte sur le fond secondaire
+          onSurface: Colors.white70, // Texte sur les surfaces
+          onError: Colors.red, // Texte sur fond d'erreur
         ),
-        useMaterial3: true, // Active le style Material 3
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.deepPurple, // Couleur d'arrière-plan de l'AppBar
+        useMaterial3: true, // Style Material 3 activé
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.amber, // Couleur AppBar
+          foregroundColor: Colors.black, // Texte et icônes AppBar
+          elevation: 2, // Léger effet d'ombre pour la profondeur
         ),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.black, // Fond de la barre de navigation
-          selectedItemColor: Colors.purple, // Couleur des éléments sélectionnés
-          unselectedItemColor: Colors.lightBlue, // Couleur des éléments non sélectionnés
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.grey[850], // Fond de la barre de navigation
+          selectedItemColor: Colors.amber, // Couleur des éléments sélectionnés
+          unselectedItemColor: Colors.cyanAccent.withOpacity(0.7), // Couleur des éléments non sélectionnés
         ),
-        scaffoldBackgroundColor: Colors.white, // Fond global des écrans
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.cyanAccent, // Couleur du FAB
+          foregroundColor: Colors.black, // Couleur du texte/icône sur le FAB
+        ),
+        cardColor: Colors.grey[850], // Couleur des cartes
+        dialogBackgroundColor: Colors.grey[900], // Couleur des dialogues
+        scaffoldBackgroundColor: Colors.black, // Fond des écrans
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(color: Colors.white), // Texte principal
+          titleLarge: TextStyle(
+            color: Colors.amber,
+            fontWeight: FontWeight.bold,
+          ), // Titres accentués
+        ),
       ),
       home: const RegistrationPage(), // Page de démarrage
     );
