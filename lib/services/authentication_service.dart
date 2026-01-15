@@ -38,14 +38,14 @@ Future<void> login(
       if (responseData.containsKey('access_token') &&
           responseData['access_token'] != null &&
           responseData['access_token'] is String) {
-        final String access_token = responseData['access_token'];
-        await saveToken(access_token,
+        final String accessToken = responseData['access_token'];
+        await saveToken(accessToken,
             'access_token'); // Sauvegarde du token dans SharedPreferences
         if (responseData.containsKey('refresh_token') &&
             responseData['refresh_token'] != null &&
             responseData['refresh_token'] is String) {
-          final String refresh_token = responseData['refresh_token'];
-          await saveToken(refresh_token, 'refresh_token');
+          final String refreshToken = responseData['refresh_token'];
+          await saveToken(refreshToken, 'refresh_token');
         }
 
         Navigator.pushReplacement(
@@ -100,9 +100,9 @@ Future<void> refreshToken(String token) async {
   }
 }
 
-Future<void> saveToken(String token, String token_type) async {
+Future<void> saveToken(String token, String tokenType) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString(token_type, token);
+  await prefs.setString(tokenType, token);
 }
 
 Future<String?> getToken(String tokenType) async {
@@ -227,12 +227,12 @@ Future<void> loadTokenState() async {
     if (isTokenExpired(token)) {
       print('token expired');
       await removeToken('access_token');
-      final String? refresh_token = await getToken('refresh_token');
-      if (refresh_token != null) {
-        if (isTokenExpired(refresh_token)) {
+      final String? refreshToken = await getToken('refresh_token');
+      if (refreshToken != null) {
+        if (isTokenExpired(refreshToken)) {
           print('refresh token expired');
         } else {
-          await refreshToken(refresh_token);
+          await refreshToken(refreshToken);
         }
       } else {
         print('no refresh_token available');

@@ -89,7 +89,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     const SizedBox(height: 16),
                     TextField(
                       controller: emailController,
-                      style: TextStyle(color: colorScheme.background),
+                      style: TextStyle(color: colorScheme.surface),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
@@ -104,7 +104,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     const SizedBox(height: 16),
                     TextField(
                       controller: usernameController,
-                      style: TextStyle(color: colorScheme.background),
+                      style: TextStyle(color: colorScheme.surface),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
@@ -119,7 +119,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     const SizedBox(height: 16),
                     TextField(
                       controller: lastNameController,
-                      style: TextStyle(color: colorScheme.background),
+                      style: TextStyle(color: colorScheme.surface),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
@@ -134,7 +134,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     const SizedBox(height: 16),
                     TextField(
                       controller: firstNameController,
-                      style: TextStyle(color: colorScheme.background),
+                      style: TextStyle(color: colorScheme.surface),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
@@ -150,7 +150,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     TextField(
                       controller: passwordController,
                       obscureText: true,
-                      style: TextStyle(color: colorScheme.background),
+                      style: TextStyle(color: colorScheme.surface),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,

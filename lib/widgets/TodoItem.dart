@@ -7,11 +7,11 @@ class TodoItemWidget extends StatelessWidget {
   final VoidCallback onDelete;
 
   const TodoItemWidget({
-    Key? key,
+    super.key,
     required this.todoItem,
     required this.onEdit,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

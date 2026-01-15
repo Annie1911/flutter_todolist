@@ -91,7 +91,7 @@ class TodoPageState extends State<TodoPage> {
 
   Future<void> _deleteItem(int id) async {
     try {
-      await TodoService.deleteTodoItem(accessToken!, id);
+      await TodoService.deleteTodoItem(accessToken, id);
       setState(() {
         todoItems.removeWhere((item) => item.id == id);
       });

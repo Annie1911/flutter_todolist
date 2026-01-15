@@ -50,7 +50,7 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(height: 16),
                     TextField(
                       controller: usernameController,
-                      style: TextStyle(color: colorScheme.background),
+                      style: TextStyle(color: colorScheme.surface),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
@@ -74,7 +74,7 @@ class LoginPage extends StatelessWidget {
                     TextField(
                       controller: passwordController,
                       obscureText: true,
-                      style: TextStyle(color: colorScheme.background),
+                      style: TextStyle(color: colorScheme.surface),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
