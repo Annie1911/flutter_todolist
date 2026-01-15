@@ -22,8 +22,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark, // Thème sombre
           primary: Colors.amber, // Couleur principale (vibrante et moderne)
           secondary: Colors.cyanAccent, // Couleur secondaire
-          surface: Colors.grey[800]!, // Fond des surfaces (cartes, dialogues)
-          background: Colors.black, // Fond global des écrans
+          surface: Colors.grey[800]!, // Fond global des écrans
           error: Colors.pinkAccent, // Couleur pour les erreurs
           onPrimary: Colors.black, // Texte sur le fond principal (contraste élevé)
           onSecondary: Colors.black, // Texte sur le fond secondaire
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
           onError: Colors.red, // Texte sur fond d'erreur
         ),
         useMaterial3: true, // Style Material 3 activé
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: Colors.amber, // Couleur AppBar
           foregroundColor: Colors.black, // Texte et icônes AppBar
           elevation: 2, // Léger effet d'ombre pour la profondeur
@@ -41,12 +40,11 @@ class MyApp extends StatelessWidget {
           selectedItemColor: Colors.amber, // Couleur des éléments sélectionnés
           unselectedItemColor: Colors.cyanAccent.withOpacity(0.7), // Couleur des éléments non sélectionnés
         ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.cyanAccent, // Couleur du FAB
           foregroundColor: Colors.black, // Couleur du texte/icône sur le FAB
         ),
-        cardColor: Colors.grey[850], // Couleur des cartes
-        dialogBackgroundColor: Colors.grey[900], // Couleur des dialogues
+        cardColor: Colors.grey[850], // Couleur des dialogues
         scaffoldBackgroundColor: Colors.black, // Fond des écrans
         textTheme: const TextTheme(
           bodyMedium: TextStyle(color: Colors.white), // Texte principal
@@ -54,7 +52,7 @@ class MyApp extends StatelessWidget {
             color: Colors.amber,
             fontWeight: FontWeight.bold,
           ), // Titres accentués
-        ),
+        ), dialogTheme: DialogThemeData(backgroundColor: Colors.grey[900]),
       ),
       home: const RegistrationPage(), // Page de démarrage
     );
